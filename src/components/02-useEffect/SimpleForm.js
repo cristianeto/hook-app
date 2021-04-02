@@ -23,11 +23,11 @@ function SimpleForm(props) {
 
   useEffect(() => {
     // console.log("formState cambió");
-  }, [formState]);
+  }, [formState]); //detecta un cambio en el formState
 
   useEffect(() => {
     // console.log("email cambió");
-  }, [email]);
+  }, [email]); //detecta un cambio solo en el email
 
   return (
     <>
