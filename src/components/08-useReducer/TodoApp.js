@@ -1,26 +1,40 @@
-import React, { useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 import { todoReducer } from "./todoReducer";
 
 import "./styles.css";
+import { useForm } from "../../hooks/useForm";
 
-const initialState = [
-  {
-    id: new Date().getTime(),
-    desc: "Aprender React",
-    done: false,
-  },
-];
+const init = () => {
+  return JSON.parse(localStorage.getItem("todos")) || [];
+  // return [
+  //   {
+  //     id: new Date().getTime(),
+  //     desc: "Aprender React",
+  //     done: false,
+  //   },
+  // ];
+};
 
 const TodoApp = () => {
-  const [todos, dispatch] = useReducer(todoReducer, initialState);
+  const [todos, dispatch] = useReducer(todoReducer, [], init);
+
+  //? usnado el hook personalizado llamado useForm
+
+  //const [formValues, handleInputCange] = useForm({
+  const [{ description }, handleInputCange, reset] = useForm({
+    description: "",
+  });
+
+  console.log(description);
 
   console.log(todos);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (description.trim().length <= 1) return;
     const newTodo = {
       id: new Date().getTime(),
-      desc: "New todo",
+      desc: description,
       done: false,
     };
     const action = {
@@ -28,7 +42,12 @@ const TodoApp = () => {
       payload: newTodo,
     };
     dispatch(action);
+    reset();
   };
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
   return (
     <div>
@@ -55,8 +74,10 @@ const TodoApp = () => {
               autoComplete="off"
               className="form-control"
               name="description"
+              onChange={handleInputCange}
               placeholder="description"
               type="text"
+              value={description}
             />
             <button
               type="submit"
