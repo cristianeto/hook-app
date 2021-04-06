@@ -45,6 +45,15 @@ const TodoApp = () => {
     reset();
   };
 
+  const handleDelete = (idTodo) => {
+    console.log(idTodo);
+    const action = {
+      type: "delete",
+      payload: idTodo,
+    };
+    dispatch(action);
+  };
+
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]);
@@ -61,7 +70,12 @@ const TodoApp = () => {
                 <p className="text-center">
                   {index + 1}. {todo.desc}
                 </p>
-                <button className="btn btn-danger">Borrar</button>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => handleDelete(todo.id)}
+                >
+                  Borrar
+                </button>
               </li>
             ))}
           </ul>
