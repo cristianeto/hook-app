@@ -46,7 +46,6 @@ const TodoApp = () => {
   };
 
   const handleDelete = (idTodo) => {
-    console.log(idTodo);
     const action = {
       type: "delete",
       payload: idTodo,
@@ -54,9 +53,13 @@ const TodoApp = () => {
     dispatch(action);
   };
 
+  const handleDone = (idTodo) => {
+    dispatch({ type: "done", payload: idTodo });
+  };
+
   useEffect(() => {
     localStorage.setItem("todos", JSON.stringify(todos));
-  }, [todos]);
+  }, [todos]); ///Rl rfrcto esta viendo que los todos cambiaron, cada cambio en el reducer de todos, se dispara el useEFfect
 
   return (
     <div>
@@ -67,7 +70,10 @@ const TodoApp = () => {
           <ul className="list-group list-group-flush">
             {todos.map((todo, index) => (
               <li key={todo.id} className="list-group-item">
-                <p className="text-center">
+                <p
+                  className={`${todo.done && "complete"}`}
+                  onClick={() => handleDone(todo.id)}
+                >
                   {index + 1}. {todo.desc}
                 </p>
                 <button
