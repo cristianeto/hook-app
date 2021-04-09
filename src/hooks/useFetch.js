@@ -29,6 +29,13 @@ export const useFetch = (url) => {
         } else {
           console.log("setState no se llamó");
         }
+      })
+      .catch((ex) => {
+        setState({
+          data: null,
+          loading: false,
+          error: "No se pudo cargar la info.",
+        });
       });
   }, [url]); // Quiero q el componente se cargue cuando la " url" cambie
 
