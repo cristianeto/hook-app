@@ -4,6 +4,10 @@ export const todoReducer = (state = [], action) => {
       return [...state, action.payload];
     case "delete":
       return state.filter((todo) => todo.id !== action.payload);
+    case "done":
+      return state.map((todo) =>
+        todo.id === action.payload ? { ...todo, done: !todo.done } : todo
+      );
     case "done-no-optimizado":
       return state.map((todo) => {
         if (todo.id === action.payload) {
@@ -15,10 +19,6 @@ export const todoReducer = (state = [], action) => {
           return todo;
         }
       });
-    case "done":
-      return state.map((todo) =>
-        todo.id === action.payload ? { ...todo, done: !todo.done } : todo
-      );
     default:
       return state;
   }
